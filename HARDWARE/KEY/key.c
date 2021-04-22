@@ -37,10 +37,10 @@ u16 Data_Buffer[4]={0};
 u16 datatemp[DATASIZE]={0};
 
 //时间设置
-uint16_t t1_count=0;
-uint16_t t2_count=0;
-uint16_t t3_count=0;
-uint16_t t4_count=0;
+uint16_t t1_count=10;
+uint16_t t2_count=10;
+uint16_t t3_count=10;
+uint16_t t4_count=10;
 
 uint16_t * t1=&t1_count;
 uint16_t * t2=&t2_count;
@@ -409,7 +409,7 @@ u8 KEY_Scan(void)
 	{
 		delay_ms(100);//去抖动
 		key_up=0;
-		if(KEY0==1)return KEY0_PRES;
+		if(KEY0==1) return KEY0_PRES;
 		else if(KEY1==1)return KEY1_PRES;
 		else if(KEY2==1)return KEY2_PRES;
 		else if(KEY3==1)return KEY3_PRES;
@@ -421,18 +421,13 @@ u8 KEY_Scan(void)
 //按键控制函数，实现相应动作
 void key_control(void)
 {
-//	int i,j;
 	//按键读取
 		key=KEY_Scan();	//得到键值					   
 		switch(key)
 		{		
 			case KEY5_PRES:	//保存
-//				new_t1 = (*t1)*1;//200;
-//				new_t2 = (*t2)*1;;//200
-//				new_t3 = (*t3)*1;
-//				new_t4 = (*t4)*1;
-				new_t1 = (*t1)*60;//200;
-				new_t2 = (*t2)*60;;//200
+				new_t1 = (*t1)*60;
+				new_t2 = (*t2)*60;
 				new_t3 = (*t3)*60;
 				new_t4 = (*t4)*60;
 				Data_Buffer[0] = new_t1;
@@ -440,7 +435,6 @@ void key_control(void)
 				Data_Buffer[2] = new_t3;
 				Data_Buffer[3] = new_t4;
 				STMFLASH_Write(FLASH_SAVE_ADDR,(uint16_t*)Data_Buffer,DATASIZE);//写入数据
-//				delay_ms(100);
 				OLED_ShowString(85,6,"W"); 
 			break;	
 			
@@ -520,12 +514,7 @@ void key_control(void)
 				*t2 = new_t2/60;
 				*t3 = new_t3/60;
 				*t4 = new_t4/60;
-//				*t1 = new_t1;
-//				*t2 = new_t2;
-//				*t3 = new_t3;
-//				*t4 = new_t4;
 				OLED_ShowString(85,6,"R"); 
-
 				break;
 		}
 }
@@ -568,7 +557,6 @@ void auto_control(void)
 				LP3=1;
 	
 				S4=0;
-//				if(1800==time_count1) //持续0.5h
 //				if(20==time_count1) //持续0.5h
 				if(new_t1==time_count1) //持续0.5h
 				{
@@ -587,7 +575,6 @@ void auto_control(void)
 				LP3=0;
 				S1=0;	
 				S4=0;
-//				if(7200==time_count2) //持续2h
 //				if(20==time_count2) //持续2h
 				if(new_t2==time_count2) //持续0.5h
 				{
@@ -604,7 +591,6 @@ void auto_control(void)
 				S4=0;
 				GP=0;
 				LP3=0;
-//				if(3600==time_count3) //持续1h
 //				if(20==time_count3) //持续1h
 				if(new_t3==time_count3) //持续0.5h	
 				{
@@ -649,36 +635,10 @@ void water(void)
 	}
 	else if(0==water_flag&&0==shidu)
 	{
-//		if(0==water_flag) S6=0;
-//		else
-//		{
 			S5=0;
 			S6=0;
-			LP2=0;
-//		}
-//		if(0==shidu) S5=0;
-//		else 
-//		{
-//			S5=1;
-//			LP2=1;
-//		}
-		
+			LP2=0;		
 	}
-//	else if(0==water_flag)
-//	{
-//		S6=0;
-////		LP2=0;
-//	}
-//	else if(1 == shidu)//土培植物
-//	{
-//		S5=1;
-//		LP2=1;
-//	}
-//	else if(0==shidu)
-//	{
-//		S5=0;
-//		LP2=0;
-//	}
 }
 
 
@@ -698,7 +658,7 @@ void change_display_queren(void)
         /************判断当前界面为任务界面******************/
 	else if(Task_Interface == Mark_Sign.Interface_Mark)
 	{
-	/*******判断当前正在运行的任务*******/
+	    /*******判断当前正在运行的任务*******/
 	}
 }
 
@@ -1008,7 +968,7 @@ void time_choose(void)
 				{
 					*t1=*t1-10;				
 				}
-				if(*t1<=0) *t1=0;
+				if(*t1==0) *t1=10;
 				OLED_ShowNum(40,0,*t1,3,16);
 				OLED_ShowNum(40,2,*t2,3,16);
 				OLED_ShowNum(104,0,*t3,3,16);
@@ -1029,7 +989,7 @@ void time_choose(void)
 				{
 					*t2=*t2-10;				
 				}
-				if(*t2<=0) *t2=0;
+				if(*t2==0) *t2=10;
 				OLED_ShowNum(40,0,*t1,3,16);
 				OLED_ShowNum(40,2,*t2,3,16);
 				OLED_ShowNum(104,0,*t3,3,16);
@@ -1050,7 +1010,7 @@ void time_choose(void)
 				{
 					*t3=*t3-10;				
 				}
-				if(*t3<=0) *t3=0;
+				if(*t3==0) *t3=10;
 				OLED_ShowNum(40,0,*t1,3,16);
 				OLED_ShowNum(40,2,*t2,3,16);
 				OLED_ShowNum(104,0,*t3,3,16);
@@ -1072,7 +1032,7 @@ void time_choose(void)
 				{
 					*t4=*t4-10;				
 				}
-				if(*t4<=0) *t4=0;
+				if(*t4==0) *t4=10;
 				OLED_ShowNum(40,0,*t1,3,16);
 				OLED_ShowNum(40,2,*t2,3,16);
 				OLED_ShowNum(104,0,*t3,3,16);

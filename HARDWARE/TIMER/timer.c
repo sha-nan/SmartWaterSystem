@@ -56,7 +56,7 @@ void TIM2_IRQHandler(void)   //TIM2中断
 {
 	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)  //检查TIM2更新中断发生与否
 	{
-		TIM_ClearITPendingBit(TIM2, TIM_IT_Update  );  //清除TIMx更新中断标志 
+		
 		
 		if(1==step2_flag)
 		{
@@ -92,6 +92,7 @@ void TIM2_IRQHandler(void)   //TIM2中断
 			time_count4=0;
 		time_count4++;	
 		water();
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update  );  //清除TIMx更新中断标志 
 	}
 }
 
@@ -130,7 +131,6 @@ void TIM3_IRQHandler(void)   //TIM3中断
 {
 	if (TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)  //检查TIM3更新中断发生与否
 	{
-		TIM_ClearITPendingBit(TIM3, TIM_IT_Update  );  //清除TIMx更新中断标志
 		key_control();
 		if(control_flag)
 		{	
@@ -141,6 +141,7 @@ void TIM3_IRQHandler(void)   //TIM3中断
 		{
 			display_mode();	
 		}
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update  );  //清除TIMx更新中断标志
 	}
 }
 
@@ -179,9 +180,10 @@ void TIM4_IRQHandler(void)   //TIM4中断
 {
 	if (TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)  //检查TIM4更新中断发生与否
 	{
-		TIM_ClearITPendingBit(TIM4, TIM_IT_Update  );  //清除TIMx更新中断标志 
+		
 		//在此添加需要执行的程序
 		TIMER_IRQ_FUN();//实现协议层系统时间的维护
+		TIM_ClearITPendingBit(TIM4, TIM_IT_Update  );  //清除TIMx更新中断标志 
 	}
 }
 
