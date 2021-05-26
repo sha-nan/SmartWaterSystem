@@ -15,6 +15,8 @@
 //Copyright(C) 广州市星翼电子科技有限公司 2009-2019
 //All rights reserved									  
 ////////////////////////////////////////////////////////////////////////////////// 
+int jiaoshui = 0;//浇水
+
 int time1_flag=0;//是否对time_count计数
 int time2_flag=0;
 int time3_flag=0;
@@ -78,20 +80,18 @@ void TIM2_IRQHandler(void)   //TIM2中断
 		}
 		else 
 			time_count3=0;
-		
-		
-//		if(1200==time_count4)//20min
-		if(1==time_count4)//20min
+
+		//10min 3000=3600-600 此处应填入3000    每小时浇水10min
+        jiaoshui=(3600-new_t4);
+		if(jiaoshui==time_count4)
 			water_flag=1;//开始换水，每2h持续20min
-//		else if(2400==time_count4)
-		else if(new_t4==time_count4)
-			water_flag=0;//停止换水		
-//		else if(7200==time_count4)//计时2小时
 		else if(3600==time_count4)//计时1小时
-//		else if(60==time_count4)
+//		else if(20==time_count4)//计时1小时
+        {      
 			time_count4=0;
-		time_count4++;	
-		water();
+            water_flag = 0;
+        }
+        time_count4++;	
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update  );  //清除TIMx更新中断标志 
 	}
 }
@@ -136,6 +136,7 @@ void TIM3_IRQHandler(void)   //TIM3中断
 		{	
 			display_mode();	
 			auto_control();//开机为自动模式
+			water();
 		}
 		else
 		{

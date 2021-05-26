@@ -37,10 +37,10 @@ u16 Data_Buffer[4]={0};
 u16 datatemp[DATASIZE]={0};
 
 //时间设置
-uint16_t t1_count=10;
-uint16_t t2_count=10;
-uint16_t t3_count=10;
-uint16_t t4_count=10;
+uint16_t t1_count=5;
+uint16_t t2_count=5;
+uint16_t t3_count=5;
+uint16_t t4_count=5;
 
 uint16_t * t1=&t1_count;
 uint16_t * t2=&t2_count;
@@ -540,12 +540,22 @@ void auto_control(void)
 				LP1 =1;
 				S4=0;
 				LP3=0;
-				
+                
+                #if 0
+				//使用非接触式液位传感器
 				if(1==water_h)
 				{
 					while(0==water_h);
 					sewage_state=2;//进入步骤2
 				}
+                #else
+                //使用接触式液位传感器
+                if(0==water_h)
+				{
+					while(1==water_h);
+					sewage_state=2;//进入步骤2
+				}
+                #endif
      break;
 				
     case step2:
@@ -963,12 +973,13 @@ void time_choose(void)
 			while(key!=3)
 			{
 				key=KEY_Scan();	//得到键值
-				if(4==key) *t1=*t1+10;
+				if(4==key) *t1=*t1+5;
 				if(5==key) 
 				{
-					*t1=*t1-10;				
+					*t1=*t1-5;				
 				}
-				if(*t1==0) *t1=10;
+				if(*t1<=5) *t1=5;
+                if(*t1>=300) *t1=300;
 				OLED_ShowNum(40,0,*t1,3,16);
 				OLED_ShowNum(40,2,*t2,3,16);
 				OLED_ShowNum(104,0,*t3,3,16);
@@ -984,12 +995,13 @@ void time_choose(void)
 			while(key!=3)
 			{
 				key=KEY_Scan();	//得到键值
-				if(4==key) *t2=*t2+10;
+				if(4==key) *t2=*t2+5;
 				if(5==key) 
 				{
-					*t2=*t2-10;				
+					*t2=*t2-5;				
 				}
-				if(*t2==0) *t2=10;
+				if(*t2<=5) *t2=5;
+                if(*t2>=300) *t2=300;
 				OLED_ShowNum(40,0,*t1,3,16);
 				OLED_ShowNum(40,2,*t2,3,16);
 				OLED_ShowNum(104,0,*t3,3,16);
@@ -1005,12 +1017,13 @@ void time_choose(void)
 			while(key!=3)
 			{
 				key=KEY_Scan();	//得到键值
-				if(4==key) *t3=*t3+10;
+				if(4==key) *t3=*t3+5;
 				if(5==key) 
 				{
-					*t3=*t3-10;				
+					*t3=*t3-5;				
 				}
-				if(*t3==0) *t3=10;
+				if(*t3<=5) *t3=5;
+                if(*t3>=300) *t3=300;
 				OLED_ShowNum(40,0,*t1,3,16);
 				OLED_ShowNum(40,2,*t2,3,16);
 				OLED_ShowNum(104,0,*t3,3,16);
@@ -1027,12 +1040,13 @@ void time_choose(void)
 			while(key!=3)
 			{
 				key=KEY_Scan();	//得到键值
-				if(4==key) *t4=*t4+10;
+				if(4==key) *t4=*t4+5;
 				if(5==key) 
 				{
-					*t4=*t4-10;				
+					*t4=*t4-5;				
 				}
-				if(*t4==0) *t4=10;
+				if(*t4<=5) *t4=5;
+                if(*t4>=55) *t4=55;
 				OLED_ShowNum(40,0,*t1,3,16);
 				OLED_ShowNum(40,2,*t2,3,16);
 				OLED_ShowNum(104,0,*t3,3,16);
